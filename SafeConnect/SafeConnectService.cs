@@ -25,6 +25,9 @@ namespace SafeConnect
         {
             Console.WriteLine("Starting...");
             new Thread(RunMessagePump).Start();
+
+            SafeConnectRefresher.MakeWebRequest();
+            SafeConnectRefresher.SetupTimer();
         }
 
         protected override void OnStop()
@@ -35,6 +38,7 @@ namespace SafeConnect
         public void StopService()
         {
             Console.WriteLine("Stopping...");
+            SafeConnectRefresher.StopTimer();
             Application.Exit();
         }
 

@@ -12,9 +12,38 @@ namespace SafeConnect
 {
     public partial class HiddenForm : Form
     {
+        private NotifyIcon m_notifyicon;
+        private ContextMenu m_menu;  
+
         public HiddenForm()
         {
             InitializeComponent();
+
+            m_menu = new ContextMenu();
+            m_menu.MenuItems.Add(0,
+                new MenuItem("Refresh", new System.EventHandler(Refresh_Click)));
+            m_menu.MenuItems.Add(1,
+                new MenuItem("Exit", new System.EventHandler(Exit_Click)));
+
+            m_notifyicon = new NotifyIcon();
+            m_notifyicon.Text = "Right click for context menu";
+            m_notifyicon.Visible = true;
+            //m_notifyicon.Icon = new Icon(GetType(), "Icon1.ico");
+            m_notifyicon.Icon = SystemIcons.Hand;
+            m_notifyicon.ContextMenu = m_menu;
+        }
+
+        protected void Exit_Click(Object sender, System.EventArgs e)
+        {
+            Close();
+        }
+        protected void Hide_Click(Object sender, System.EventArgs e)
+        {
+            Hide();
+        }
+        protected void Refresh_Click(Object sender, System.EventArgs e)
+        {
+            SafeConnectRefresher.MakeWebRequest();
         }
 
         private void HiddenForm_Load(object sender, EventArgs e)

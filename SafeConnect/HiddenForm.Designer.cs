@@ -6,6 +6,10 @@
 
         protected override void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                this.m_notifyicon.Dispose();
+            }
             if (disposing && (components != null))
             {
                 components.Dispose();
