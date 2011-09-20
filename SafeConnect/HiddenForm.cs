@@ -12,67 +12,67 @@ namespace SafeConnect
 {
     public partial class HiddenForm : Form
     {
-        private NotifyIcon m_notifyicon;
-        private ContextMenu m_menu;  
+        private System.ComponentModel.IContainer components = null;
 
         public HiddenForm()
         {
             InitializeComponent();
-
-            m_menu = new ContextMenu();
-            m_menu.MenuItems.Add(0,
-                new MenuItem("Refresh", new System.EventHandler(Refresh_Click)));
-            m_menu.MenuItems.Add(1,
-                new MenuItem("Exit", new System.EventHandler(Exit_Click)));
-
-            m_notifyicon = new NotifyIcon();
-            m_notifyicon.Text = "Right click for context menu";
-            m_notifyicon.Visible = true;
-            //m_notifyicon.Icon = new Icon(GetType(), "Icon1.ico");
-            m_notifyicon.Icon = SystemIcons.Hand;
-            m_notifyicon.ContextMenu = m_menu;
         }
 
-        protected void Exit_Click(Object sender, System.EventArgs e)
+        protected override void Dispose(bool disposing)
         {
-            Close();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
-        protected void Hide_Click(Object sender, System.EventArgs e)
+
+        private void InitializeComponent()
         {
-            Hide();
-        }
-        protected void Refresh_Click(Object sender, System.EventArgs e)
-        {
-            SafeConnectRefresher.MakeWebRequest();
+            this.SuspendLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(0, 0);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "HiddenForm";
+            this.Text = "HiddenForm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.Load += new System.EventHandler(this.HiddenForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HiddenForm_FormClosing);
+            this.ResumeLayout(false);
+
         }
 
         private void HiddenForm_Load(object sender, EventArgs e)
         {
-            SystemEvents.TimeChanged += new EventHandler(SystemEvents_TimeChanged);
-            SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UPCChanged);
+            //SystemEvents.TimeChanged += new EventHandler(SystemEvents_TimeChanged);
+            //SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UPCChanged);
             SystemEvents.PowerModeChanged += new PowerModeChangedEventHandler(SystemEvents_PowerModeChanged);
         }
 
         private void HiddenForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SystemEvents.TimeChanged -= new EventHandler(SystemEvents_TimeChanged);
-            SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(SystemEvents_UPCChanged);
+            //SystemEvents.TimeChanged -= new EventHandler(SystemEvents_TimeChanged);
+            //SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(SystemEvents_UPCChanged);
+            SystemEvents.PowerModeChanged -= new PowerModeChangedEventHandler(SystemEvents_PowerModeChanged);
         }
 
         private void SystemEvents_TimeChanged(object sender, EventArgs e)
         {
-            Console.WriteLine("SimpleService.TimeChanged, Time changed; it is now " +
+            SafeConnectService.Log("HiddenForm: SimpleService.TimeChanged, Time changed; it is now " +
                 DateTime.Now.ToLongTimeString());
         }
 
         private void SystemEvents_UPCChanged(object sender, UserPreferenceChangedEventArgs e)
         {
-            Console.WriteLine("SimpleService.UserPreferenceChanged, " + e.Category.ToString());
+            SafeConnectService.Log("HiddenForm: SimpleService.UserPreferenceChanged, " + e.Category.ToString());
         }
 
         private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-            Console.WriteLine("SimpleService.PowerModeChanged - " + e.Mode);
+            SafeConnectService.Log("HiddenForm: SimpleService.PowerModeChanged - " + e.Mode);
+            SafeConnectRefresher.HandlePowerEvent(e);
         }
     }
 }

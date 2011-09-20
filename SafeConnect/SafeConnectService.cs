@@ -5,11 +5,14 @@ using System.Text;
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
 
 namespace SafeConnect
 {
     class SafeConnectService : ServiceBase
     {
+        public static readonly string LOG_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SafeConnect", "SafeConnectLog.txt");
+
         public SafeConnectService()
         {
             this.CanHandlePowerEvent = true;
@@ -23,7 +26,7 @@ namespace SafeConnect
 
         public void StartService()
         {
-            Console.WriteLine("Starting...");
+            SafeConnectService.Log("SafeConnectService: Starting...");
             new Thread(RunMessagePump).Start();
 
             SafeConnectRefresher.MakeWebRequest();
@@ -37,21 +40,29 @@ namespace SafeConnect
 
         public void StopService()
         {
-            Console.WriteLine("Stopping...");
+            SafeConnectService.Log("SafeConnectService: Stopping...");
             SafeConnectRefresher.StopTimer();
             Application.Exit();
         }
 
         void RunMessagePump()
         {
-            Console.WriteLine("Starting message pump");
+            SafeConnectService.Log("SafeConnectService: Starting message pump");
             Application.Run(new HiddenForm());
         }
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
         {
-            Console.WriteLine(powerStatus + DateTime.Now.ToShortTimeString());
+            SafeConnectService.Log("SafeConnectService: " + powerStatus + DateTime.Now.ToShortTimeString());
             return base.OnPowerEvent(powerStatus);
+        }
+
+        public static void Log(string message)
+        {
+            using (StreamWriter logfile = new StreamWriter(LOG_PATH))
+            {
+                logfile.WriteLine(message);
+            }
         }
     }
 }
