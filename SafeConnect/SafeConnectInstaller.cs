@@ -28,8 +28,15 @@ namespace SafeConnect
 
             serviceInstaller.ServiceName = "SafeConnect";
 
+            processInstaller.AfterInstall += new InstallEventHandler(processInstaller_AfterInstall);
+
             Installers.Add(serviceInstaller);
             Installers.Add(processInstaller);
+        }
+
+        private void processInstaller_AfterInstall(object sender, InstallEventArgs args)
+        {
+
         }
     }
 }

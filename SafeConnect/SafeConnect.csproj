@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D7588634-5BCA-43BF-B5AE-43A617FE6DC8}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SafeConnect</RootNamespace>
     <AssemblyName>SafeConnect</AssemblyName>
@@ -55,6 +55,7 @@
     <Compile Include="HiddenForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Logger.cs" />
     <Compile Include="SafeConnectRefresher.cs" />
     <Compile Include="SafeConnectInstaller.cs">
       <SubType>Component</SubType>

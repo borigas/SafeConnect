@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
+﻿using System.Net;
 using System.Timers;
 using System.Configuration;
-using System.Drawing;
 using Microsoft.Win32;
 
 namespace SafeConnect
@@ -23,7 +18,7 @@ namespace SafeConnect
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings[URL_KEY]);
             request.UserAgent = ConfigurationManager.AppSettings[USER_AGENT_KEY];
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            SafeConnectService.Log("SafeConnectRefresher: Status: " + response.StatusCode);
+            Logger.Log("SafeConnectRefresher: Status: " + response.StatusCode);
             response.Close();
         }
 
@@ -33,7 +28,7 @@ namespace SafeConnect
             timer.Interval = double.Parse(ConfigurationManager.AppSettings[SLEEP_TIME_KEY]);
             timer.Elapsed += (source, args) =>
             {
-                SafeConnectService.Log("SafeConnectRefresher: Timer elapsed at " + args.SignalTime);
+                Logger.Log("SafeConnectRefresher: Timer elapsed at " + args.SignalTime);
                 MakeWebRequest();
             };
             timer.Start();

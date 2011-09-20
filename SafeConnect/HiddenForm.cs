@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
@@ -60,18 +54,18 @@ namespace SafeConnect
 
         private void SystemEvents_TimeChanged(object sender, EventArgs e)
         {
-            SafeConnectService.Log("HiddenForm: SimpleService.TimeChanged, Time changed; it is now " +
+            Logger.Log("HiddenForm: SimpleService.TimeChanged, Time changed; it is now " +
                 DateTime.Now.ToLongTimeString());
         }
 
         private void SystemEvents_UPCChanged(object sender, UserPreferenceChangedEventArgs e)
         {
-            SafeConnectService.Log("HiddenForm: SimpleService.UserPreferenceChanged, " + e.Category.ToString());
+            Logger.Log("HiddenForm: SimpleService.UserPreferenceChanged, " + e.Category.ToString());
         }
 
         private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-            SafeConnectService.Log("HiddenForm: SimpleService.PowerModeChanged - " + e.Mode);
+            Logger.Log("HiddenForm: SimpleService.PowerModeChanged - " + e.Mode);
             SafeConnectRefresher.HandlePowerEvent(e);
         }
     }
