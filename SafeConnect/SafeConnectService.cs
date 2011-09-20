@@ -9,7 +9,7 @@ namespace SafeConnect
     {
         public SafeConnectService()
         {
-            this.CanHandlePowerEvent = true;
+            //this.CanHandlePowerEvent = true;
             this.ServiceName = "SafeConnect";
         }
 
@@ -45,10 +45,10 @@ namespace SafeConnect
             Application.Run(new HiddenForm());
         }
 
-        protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
-        {
-            Logger.Log("SafeConnectService: " + powerStatus + DateTime.Now.ToString("f"));
-            return base.OnPowerEvent(powerStatus);
-        }
+        //protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
+        //{
+        //    Logger.Log("SafeConnectService: " + powerStatus + DateTime.Now.ToString("g"));
+        //    return base.OnPowerEvent(powerStatus);
+        //}
     }
 }

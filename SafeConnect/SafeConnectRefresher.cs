@@ -18,7 +18,7 @@ namespace SafeConnect
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings[URL_KEY]);
             request.UserAgent = ConfigurationManager.AppSettings[USER_AGENT_KEY];
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Logger.Log("SafeConnectRefresher: Status: " + response.StatusCode);
+            Logger.Log("SafeConnectRefresher: Status: " + response.StatusCode + " " + System.DateTime.Now.ToString("g"));
             response.Close();
         }
 
@@ -43,7 +43,7 @@ namespace SafeConnect
         {
             if (args.Mode == PowerModes.Resume)
             {
-                Logger.Log("SafeConnectRefresher: Refreshing on system resume" + System.DateTime.Now.ToString("f"));
+                Logger.Log("SafeConnectRefresher: Refreshing on system resume" + System.DateTime.Now.ToString("g"));
                 MakeWebRequest();
             }
         }
