@@ -65,7 +65,7 @@ namespace SafeConnect
 
         private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-            Logger.Log("HiddenForm: SimpleService.PowerModeChanged - " + e.Mode);
+            Logger.Log("HiddenForm: SimpleService.PowerModeChanged - " + e.Mode + " at " + DateTime.Now.ToString("f"));
             SafeConnectRefresher.HandlePowerEvent(e);
         }
     }

@@ -47,7 +47,7 @@ namespace SafeConnect
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
         {
-            Logger.Log("SafeConnectService: " + powerStatus + DateTime.Now.ToShortTimeString());
+            Logger.Log("SafeConnectService: " + powerStatus + DateTime.Now.ToString("f"));
             return base.OnPowerEvent(powerStatus);
         }
     }

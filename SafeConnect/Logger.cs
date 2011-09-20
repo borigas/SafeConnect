@@ -29,6 +29,7 @@ namespace SafeConnect
             using (StreamWriter logfile = new StreamWriter(LOG_PATH, true))
             {
                 logfile.WriteLine(message);
+                logfile.Close();
             }
         }
     }

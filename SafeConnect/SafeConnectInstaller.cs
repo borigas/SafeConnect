@@ -12,6 +12,8 @@ namespace SafeConnect
     [RunInstaller(true)]
     public partial class SafeConnectInstaller : System.Configuration.Install.Installer
     {
+        private const string SERVICE_NAME = "SafeConnect";
+
         private ServiceInstaller serviceInstaller;
         private ServiceProcessInstaller processInstaller;
 
@@ -21,12 +23,12 @@ namespace SafeConnect
             serviceInstaller = new ServiceInstaller();
 
             // Service will run under system account
-            processInstaller.Account = ServiceAccount.LocalSystem;
+            processInstaller.Account = ServiceAccount.User;
 
             // Service will have Start Type of Manual
             serviceInstaller.StartType = ServiceStartMode.Automatic;
 
-            serviceInstaller.ServiceName = "SafeConnect";
+            serviceInstaller.ServiceName = SERVICE_NAME;
 
             processInstaller.AfterInstall += new InstallEventHandler(processInstaller_AfterInstall);
 
@@ -36,7 +38,18 @@ namespace SafeConnect
 
         private void processInstaller_AfterInstall(object sender, InstallEventArgs args)
         {
+            ServiceController service = new ServiceController(SERVICE_NAME);
+            try
+            {
+                TimeSpan timeout = TimeSpan.FromMilliseconds(10000);
 
+                service.Start();
+                service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+            }
+            catch
+            {
+                // ...
+            }
         }
     }
 }

@@ -43,6 +43,7 @@ namespace SafeConnect
         {
             if (args.Mode == PowerModes.Resume)
             {
+                Logger.Log("SafeConnectRefresher: Refreshing on system resume" + System.DateTime.Now.ToString("f"));
                 MakeWebRequest();
             }
         }
