@@ -3,9 +3,9 @@ using System.Timers;
 using System.Configuration;
 using Microsoft.Win32;
 
-namespace SafeConnect
+namespace SafeConnectCore
 {
-    class SafeConnectRefresher
+    public class SafeConnectUpdater
     {
         private const string URL_KEY = "URL";
         private const string USER_AGENT_KEY = "UserAgent";
@@ -13,13 +13,20 @@ namespace SafeConnect
 
         private static Timer timer;
 
-        public static void MakeWebRequest()
+        public static bool MakeWebRequest()
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings[URL_KEY]);
-            request.UserAgent = ConfigurationManager.AppSettings[USER_AGENT_KEY];
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Logger.Log("SafeConnectRefresher: Status: " + response.StatusCode + " " + System.DateTime.Now.ToString("g"));
-            response.Close();
+            bool success = false;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings[URL_KEY]);
+                request.UserAgent = ConfigurationManager.AppSettings[USER_AGENT_KEY];
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                success = response.StatusCode == HttpStatusCode.OK;
+                response.Close();
+            }
+            catch { }
+            Logger.Log("Connection " + (success ? "succeeded" : "failed"));
+            return success;
         }
 
         public static void SetupTimer()
@@ -28,7 +35,7 @@ namespace SafeConnect
             timer.Interval = double.Parse(ConfigurationManager.AppSettings[SLEEP_TIME_KEY]);
             timer.Elapsed += (source, args) =>
             {
-                Logger.Log("SafeConnectRefresher: Timer elapsed at " + args.SignalTime);
+                Logger.Log("Timer elapsed");
                 MakeWebRequest();
             };
             timer.Start();
@@ -39,11 +46,17 @@ namespace SafeConnect
             timer.Stop();
         }
 
+        public static void ResetTimer()
+        {
+            timer.Stop();
+            timer.Start();
+        }
+
         public static void HandlePowerEvent(PowerModeChangedEventArgs args)
         {
             if (args.Mode == PowerModes.Resume)
             {
-                Logger.Log("SafeConnectRefresher: Refreshing on system resume" + System.DateTime.Now.ToString("g"));
+                Logger.Log("Refreshing on system resume");
                 MakeWebRequest();
             }
         }

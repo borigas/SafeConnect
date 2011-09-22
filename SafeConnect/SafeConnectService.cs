@@ -2,6 +2,7 @@
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows.Forms;
+using SafeConnectCore;
 
 namespace SafeConnect
 {
@@ -23,8 +24,8 @@ namespace SafeConnect
             Logger.Log("SafeConnectService: Starting...");
             new Thread(RunMessagePump).Start();
 
-            SafeConnectRefresher.MakeWebRequest();
-            SafeConnectRefresher.SetupTimer();
+            SafeConnectUpdater.MakeWebRequest();
+            SafeConnectUpdater.SetupTimer();
         }
 
         protected override void OnStop()
@@ -35,7 +36,7 @@ namespace SafeConnect
         public void StopService()
         {
             Logger.Log("SafeConnectService: Stopping...");
-            SafeConnectRefresher.StopTimer();
+            SafeConnectUpdater.StopTimer();
             Application.Exit();
         }
 

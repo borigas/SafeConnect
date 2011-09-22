@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using SafeConnectCore;
 
-namespace SafeConnect
+namespace SafeConnectCore
 {
     public partial class HiddenForm : Form
     {
@@ -66,7 +67,7 @@ namespace SafeConnect
         private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             Logger.Log("HiddenForm: SimpleService.PowerModeChanged - " + e.Mode + " at " + DateTime.Now.ToString("g"));
-            SafeConnectRefresher.HandlePowerEvent(e);
+            SafeConnectUpdater.HandlePowerEvent(e);
         }
     }
 }
